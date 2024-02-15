@@ -305,61 +305,85 @@ namespace pugi
 	#endif
 
 	// Range-based for loop support
-	template <typename It> class xml_object_range
+    //! @cider_ignore
+    template <typename It>
+    //! @cider_ignore
+    class xml_object_range
 	{
 	public:
+        //! @cider_ignore
 		typedef It const_iterator;
+        //! @cider_ignore
 		typedef It iterator;
 
+        //! @cider_ignore
 		xml_object_range(It b, It e): _begin(b), _end(e)
 		{
 		}
 
+        //! @cider_ignore
 		It begin() const { return _begin; }
+
+        //! @cider_ignore
 		It end() const { return _end; }
 
+        //! @cider_ignore
 		bool empty() const { return _begin == _end; }
 
 	private:
+        //! @cider_ignore
 		It _begin, _end;
 	};
 
 	// Writer interface for node printing (see xml_node::print)
+    //! @cider_ignore
 	class PUGIXML_CLASS xml_writer
 	{
 	public:
+        //! @cider_ignore
 		virtual ~xml_writer();
 
 		// Write memory chunk into stream/file/whatever
+        //! @cider_ignore
 		virtual void write(const void* data, size_t size) = 0;
 	};
 
 	// xml_writer implementation for FILE*
+    //! @cider_ignore
 	class PUGIXML_CLASS xml_writer_file: public xml_writer
 	{
 	public:
 		// Construct writer from a FILE* object; void* is used to avoid header dependencies on stdio
+        //! @cider_ignore
 		xml_writer_file(void* file);
 
+        //! @cider_ignore
 		virtual void write(const void* data, size_t size) PUGIXML_OVERRIDE;
 
 	private:
+        //! @cider_ignore
 		void* file;
 	};
 
 	#ifndef PUGIXML_NO_STL
 	// xml_writer implementation for streams
+    //! @cider_ignore
 	class PUGIXML_CLASS xml_writer_stream: public xml_writer
 	{
 	public:
 		// Construct writer from an output stream object
+        //! @cider_ignore
 		xml_writer_stream(std::basic_ostream<char>& stream);
+        //! @cider_ignore
 		xml_writer_stream(std::basic_ostream<wchar_t>& stream);
 
+        //! @cider_ignore
 		virtual void write(const void* data, size_t size) PUGIXML_OVERRIDE;
 
-	private:
+    private:
+        //! @cider_ignore
 		std::basic_ostream<char>* narrow_stream;
+        //! @cider_ignore
 		std::basic_ostream<wchar_t>* wide_stream;
 	};
 	#endif
@@ -380,9 +404,11 @@ namespace pugi
 		xml_attribute();
 
 		// Constructs attribute from internal pointer
+        //! @cider_ignore
 		explicit xml_attribute(xml_attribute_struct* attr);
 
 		// Safe bool conversion operator
+        //! @cider_ignore
 		operator unspecified_bool_type() const;
 
 		// Borland C++ workaround
@@ -465,6 +491,7 @@ namespace pugi
 		size_t hash_value() const;
 
 		// Get internal pointer
+        //! @cider_ignore
 		xml_attribute_struct* internal_object() const;
 	};
 
@@ -491,9 +518,11 @@ namespace pugi
 		xml_node();
 
 		// Constructs node from internal pointer
+        //! @cider_ignore
 		explicit xml_node(xml_node_struct* p);
 
 		// Safe bool conversion operator
+        //! @cider_ignore
 		operator unspecified_bool_type() const;
 
 		// Borland C++ workaround
@@ -615,55 +644,65 @@ namespace pugi
 		// Parses buffer as an XML document fragment and appends all nodes as children of the current node.
 		// Copies/converts the buffer, so it may be deleted or changed after the function returns.
 		// Note: append_buffer allocates memory that has the lifetime of the owning document; removing the appended nodes does not immediately reclaim that memory.
+        //! @cider_ignore
 		xml_parse_result append_buffer(const void* contents, size_t size, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
-		// Find attribute using predicate. Returns first attribute for which predicate returned true.
-		template <typename Predicate> xml_attribute find_attribute(Predicate pred) const
-		{
-			if (!_root) return xml_attribute();
+        // Find attribute using predicate. Returns first attribute for which predicate returned true.
+        //! @cider_ignore
+        template <typename Predicate>
+        //! @cider_ignore
+        xml_attribute find_attribute(Predicate pred) const
+        {
+            if (!_root) return xml_attribute();
 
-			for (xml_attribute attrib = first_attribute(); attrib; attrib = attrib.next_attribute())
-				if (pred(attrib))
-					return attrib;
+            for (xml_attribute attrib = first_attribute(); attrib; attrib = attrib.next_attribute())
+                if (pred(attrib))
+                    return attrib;
 
-			return xml_attribute();
-		}
+            return xml_attribute();
+        }
 
-		// Find child node using predicate. Returns first child for which predicate returned true.
-		template <typename Predicate> xml_node find_child(Predicate pred) const
-		{
-			if (!_root) return xml_node();
+        // Find child node using predicate. Returns first child for which predicate returned true.
+        //! @cider_ignore
+        template <typename Predicate>
+        //! @cider_ignore
+        xml_node find_child(Predicate pred) const
+        {
+            if (!_root) return xml_node();
 
-			for (xml_node node = first_child(); node; node = node.next_sibling())
-				if (pred(node))
-					return node;
+            for (xml_node node = first_child(); node; node = node.next_sibling())
+                if (pred(node))
+                    return node;
 
-			return xml_node();
-		}
+            return xml_node();
+        }
 
-		// Find node from subtree using predicate. Returns first node from subtree (depth-first), for which predicate returned true.
-		template <typename Predicate> xml_node find_node(Predicate pred) const
-		{
-			if (!_root) return xml_node();
+        // Find node from subtree using predicate. Returns first node from subtree (depth-first), for which predicate return
+        //! @cider_ignore
+        template <typename Predicate>
+        //! @cider_ignore
+        xml_node find_node(Predicate pred) const
+        {
+            if (!_root) return xml_node();
 
-			xml_node cur = first_child();
+            xml_node cur = first_child();
 
-			while (cur._root && cur._root != _root)
-			{
-				if (pred(cur)) return cur;
+            while (cur._root && cur._root != _root)
+            {
+                if (pred(cur)) return cur;
 
-				if (cur.first_child()) cur = cur.first_child();
-				else if (cur.next_sibling()) cur = cur.next_sibling();
-				else
-				{
-					while (!cur.next_sibling() && cur._root != _root) cur = cur.parent();
+                if (cur.first_child()) cur = cur.first_child();
+                else if (cur.next_sibling()) cur = cur.next_sibling();
+                else
+                {
+                    while (!cur.next_sibling() && cur._root != _root) cur = cur.parent();
 
-					if (cur._root != _root) cur = cur.next_sibling();
-				}
-			}
+                    if (cur._root != _root) cur = cur.next_sibling();
+                }
+            }
 
-			return xml_node();
-		}
+            return xml_node();
+        }
 
 		// Find child node by attribute name/value
 		xml_node find_child_by_attribute(const char_t* name, const char_t* attr_name, const char_t* attr_value) const;
@@ -696,32 +735,43 @@ namespace pugi
 	#endif
 
 		// Print subtree using a writer object
+        //! @cider_ignore
 		void print(xml_writer& writer, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
 
 	#ifndef PUGIXML_NO_STL
 		// Print subtree to stream
+        //! @cider_ignore
 		void print(std::basic_ostream<char>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
+        //! @cider_ignore
 		void print(std::basic_ostream<wchar_t>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, unsigned int depth = 0) const;
 	#endif
 
 		// Child nodes iterators
 		typedef xml_node_iterator iterator;
 
+        //! @cider_ignore
 		iterator begin() const;
+
+        //! @cider_ignore
 		iterator end() const;
 
 		// Attribute iterators
 		typedef xml_attribute_iterator attribute_iterator;
 
+        //! @cider_ignore
 		attribute_iterator attributes_begin() const;
+        //! @cider_ignore
 		attribute_iterator attributes_end() const;
 
 		// Range-based for support
+        //! @cider_ignore
 		xml_object_range<xml_node_iterator> children() const;
+        //! @cider_ignore
 		xml_object_range<xml_attribute_iterator> attributes() const;
 
 		// Range-based for support for all children with the specified name
 		// Note: name pointer must have a longer lifetime than the returned object; be careful with passing temporaries!
+        //! @cider_ignore
 		xml_object_range<xml_named_node_iterator> children(const char_t* name) const;
 
 		// Get node offset in parsed file/string (in char_t units) for debugging purposes
@@ -731,6 +781,7 @@ namespace pugi
 		size_t hash_value() const;
 
 		// Get internal pointer
+        //! @cider_ignore
 		xml_node_struct* internal_object() const;
 	};
 
@@ -759,6 +810,7 @@ namespace pugi
 		xml_text();
 
 		// Safe bool conversion operator
+        //! @cider_ignore
 		operator unspecified_bool_type() const;
 
 		// Borland C++ workaround
@@ -970,10 +1022,14 @@ namespace pugi
 
 	protected:
 		// Get current traversal depth
+        //! @cider_ignore
 		int depth() const;
 
 	public:
+        //! @cider_ignore
 		xml_tree_walker();
+
+        //! @cider_ignore
 		virtual ~xml_tree_walker();
 
 		// Callback that is called when traversal begins
@@ -1026,12 +1082,15 @@ namespace pugi
 		xml_encoding encoding;
 
 		// Default constructor, initializes object to failed state
+        //! @cider_ignore
 		xml_parse_result();
 
 		// Cast to bool operator
+        //! @cider_ignore
 		operator bool() const;
 
 		// Get error description
+        //! @cider_ignore
 		const char* description() const;
 	};
 
@@ -1072,7 +1131,9 @@ namespace pugi
 
 	#ifndef PUGIXML_NO_STL
 		// Load document from stream.
+        //! @cider_ignore
 		xml_parse_result load(std::basic_istream<char>& stream, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
+        //! @cider_ignore
 		xml_parse_result load(std::basic_istream<wchar_t>& stream, unsigned int options = parse_default);
 	#endif
 
@@ -1084,17 +1145,22 @@ namespace pugi
 
 		// Load document from file
 		xml_parse_result load_file(const char* path, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
+
+        //! @cider_ignore
 		xml_parse_result load_file(const wchar_t* path, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
 		// Load document from buffer. Copies/converts the buffer, so it may be deleted or changed after the function returns.
+        //! @cider_ignore
 		xml_parse_result load_buffer(const void* contents, size_t size, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
 		// Load document from buffer, using the buffer for in-place parsing (the buffer is modified and used for storage of document data).
 		// You should ensure that buffer data will persist throughout the document's lifetime, and free the buffer memory manually once document is destroyed.
+        //! @cider_ignore
 		xml_parse_result load_buffer_inplace(void* contents, size_t size, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
 		// Load document from buffer, using the buffer for in-place parsing (the buffer is modified and used for storage of document data).
 		// You should allocate the buffer with pugixml allocation function; document will free the buffer when it is no longer needed (you can't use it anymore).
+        //! @cider_ignore
 		xml_parse_result load_buffer_inplace_own(void* contents, size_t size, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
 		// Save XML document to writer (semantics is slightly different from xml_node::print, see documentation for details).
@@ -1102,12 +1168,15 @@ namespace pugi
 
 	#ifndef PUGIXML_NO_STL
 		// Save XML document to stream (semantics is slightly different from xml_node::print, see documentation for details).
+        //! @cider_ignore
 		void save(std::basic_ostream<char>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        //! @cider_ignore
 		void save(std::basic_ostream<wchar_t>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default) const;
 	#endif
 
 		// Save XML to file
 		bool save_file(const char* path, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        //! @cider_ignore
 		bool save_file(const wchar_t* path, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
 
 		// Get document element
@@ -1135,12 +1204,15 @@ namespace pugi
 		ptrdiff_t offset;
 
 		// Default constructor, initializes object to failed state
+        //! @cider_ignore
 		xpath_parse_result();
 
 		// Cast to bool operator
+        //! @cider_ignore
 		operator bool() const;
 
 		// Get error description
+        //! @cider_ignore
 		const char* description() const;
 	};
 
@@ -1287,9 +1359,10 @@ namespace pugi
 		xpath_node evaluate_node(const xpath_node& n) const;
 
 		// Get parsing result (used to get compilation errors in PUGIXML_NO_EXCEPTIONS mode)
-		const xpath_parse_result& result() const;
+         xpath_parse_result result() const;
 
 		// Safe bool conversion operator
+        //! @cider_ignore
 		operator unspecified_bool_type() const;
 
 		// Borland C++ workaround
@@ -1307,16 +1380,20 @@ namespace pugi
 	class PUGIXML_CLASS xpath_exception: public std::exception
 	{
 	private:
+        //! @cider_ignore
 		xpath_parse_result _result;
 
 	public:
 		// Construct exception from parse result
+        //! @cider_ignore
 		explicit xpath_exception(const xpath_parse_result& result);
 
 		// Get error message
+        //! @cider_ignore
 		virtual const char* what() const throw() PUGIXML_OVERRIDE;
 
 		// Get parse result
+        //! @cider_ignore
 		const xpath_parse_result& result() const;
 	};
         #if defined(_MSC_VER)
@@ -1349,6 +1426,7 @@ namespace pugi
 		xml_node parent() const;
 
 		// Safe bool conversion operator
+        //! @cider_ignore
 		operator unspecified_bool_type() const;
 
 		// Borland C++ workaround
@@ -1365,18 +1443,17 @@ namespace pugi
 	bool PUGIXML_FUNCTION operator||(const xpath_node& lhs, bool rhs);
 #endif
 
+    enum type_t
+    {
+        type_unsorted,			// Not ordered
+        type_sorted,			// Sorted by document order (ascending)
+        type_sorted_reverse		// Sorted by document order (descending)
+    };
+
 	// A fixed-size collection of XPath nodes
 	class PUGIXML_CLASS xpath_node_set
-	{
-	public:
-		// Collection type
-		enum type_t
-		{
-			type_unsorted,			// Not ordered
-			type_sorted,			// Sorted by document order (ascending)
-			type_sorted_reverse		// Sorted by document order (descending)
-		};
-
+    {
+    public:
 		// Constant iterator type
 		typedef const xpath_node* const_iterator;
 
@@ -1387,6 +1464,7 @@ namespace pugi
 		xpath_node_set();
 
 		// Constructs a set from iterator range; data is not checked for duplicates and is not sorted according to provided type, so be careful
+        //! @cider_ignore
 		xpath_node_set(const_iterator begin, const_iterator end, type_t type = type_unsorted);
 
 		// Destructor
@@ -1412,7 +1490,10 @@ namespace pugi
 		const xpath_node& operator[](size_t index) const;
 
 		// Collection iterators
+        //! @cider_ignore
 		const_iterator begin() const;
+
+        //! @cider_ignore
 		const_iterator end() const;
 
 		// Sort the collection in ascending/descending order by document order
@@ -1439,11 +1520,18 @@ namespace pugi
 
 #ifndef PUGIXML_NO_STL
 	// Convert wide string to UTF8
+
+    //! @cider_ignore
 	std::basic_string<char> PUGIXML_FUNCTION as_utf8(const wchar_t* str);
+
+    //! @cider_ignore
 	std::basic_string<char> PUGIXML_FUNCTION as_utf8(const std::basic_string<wchar_t>& str);
 
 	// Convert UTF8 to wide string
+    //! @cider_ignore
 	std::basic_string<wchar_t> PUGIXML_FUNCTION as_wide(const char* str);
+
+    //! @cider_ignore
 	std::basic_string<wchar_t> PUGIXML_FUNCTION as_wide(const std::basic_string<char>& str);
 #endif
 
@@ -1454,10 +1542,14 @@ namespace pugi
 	typedef void (*deallocation_function)(void* ptr);
 
 	// Override default memory management functions. All subsequent allocations/deallocations will be performed via supplied functions.
+    //! @cider_ignore
 	void PUGIXML_FUNCTION set_memory_management_functions(allocation_function allocate, deallocation_function deallocate);
 
 	// Get current memory management functions
+    //! @cider_ignore
 	allocation_function PUGIXML_FUNCTION get_memory_allocation_function();
+
+    //! @cider_ignore
 	deallocation_function PUGIXML_FUNCTION get_memory_deallocation_function();
 }
 

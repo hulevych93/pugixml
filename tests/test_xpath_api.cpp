@@ -76,7 +76,7 @@ TEST_XML(xpath_api_node_accessors, "<node attr='value'/>")
 inline void xpath_api_node_accessors_helper(const xpath_node_set& set)
 {
 	CHECK(set.size() == 2);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 	CHECK(!set.empty());
 	CHECK_STRING(set[0].node().name(), STR("foo"));
 	CHECK_STRING(set[1].node().name(), STR("foo"));
@@ -89,7 +89,7 @@ TEST_XML(xpath_api_nodeset_accessors, "<node><foo/><foo/></node>")
 {
 	xpath_node_set null;
 	CHECK(null.size() == 0);
-	CHECK(null.type() == xpath_node_set::type_unsorted);
+	CHECK(null.type() == type_unsorted);
 	CHECK(null.empty());
 	CHECK(!null.first());
 	CHECK(null.begin() == null.end());
@@ -385,19 +385,19 @@ TEST_XML(xpath_api_node_set_assign_out_of_memory_preserve, "<node><a/><b/></node
 {
 	xpath_node_set ns = doc.select_nodes(STR("node/*"));
 	CHECK(ns.size() == 2);
-	CHECK(ns.type() == xpath_node_set::type_sorted);
+	CHECK(ns.type() == type_sorted);
 
 	xpath_node_set nsall = doc.select_nodes(STR("//*"));
 	nsall.sort(true);
 	CHECK(nsall.size() == 3);
-	CHECK(nsall.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(nsall.type() == type_sorted_reverse);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	CHECK_ALLOC_FAIL(ns = nsall);
 
 	CHECK(ns.size() == 2);
-	CHECK(ns.type() == xpath_node_set::type_sorted);
+	CHECK(ns.type() == type_sorted);
 	CHECK(ns[0] == doc.child(STR("node")).child(STR("a")) && ns[1] == doc.child(STR("node")).child(STR("b")));
 }
 
@@ -416,17 +416,17 @@ TEST_XML(xpath_api_nodeset_move_ctor, "<node><foo/><foo/><bar/></node>")
 	xpath_node_set set = doc.select_nodes(STR("node/bar/preceding::*"));
 
 	CHECK(set.size() == 2);
-	CHECK(set.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(set.type() == type_sorted_reverse);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 2);
-	CHECK(move.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(move.type() == type_sorted_reverse);
 	CHECK(move[1] == doc.first_child().first_child());
 }
 
@@ -436,17 +436,17 @@ TEST_XML(xpath_api_nodeset_move_ctor_single, "<node><foo/><foo/><bar/></node>")
 	xpath_node_set set = doc.select_nodes(STR("node/bar"));
 
 	CHECK(set.size() == 1);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 1);
-	CHECK(move.type() == xpath_node_set::type_sorted);
+	CHECK(move.type() == type_sorted);
 	CHECK(move[0] == doc.first_child().last_child());
 }
 
@@ -456,17 +456,17 @@ TEST(xpath_api_nodeset_move_ctor_empty)
 	set.sort();
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 0);
-	CHECK(move.type() == xpath_node_set::type_sorted);
+	CHECK(move.type() == type_sorted);
 }
 
 TEST_XML(xpath_api_nodeset_move_assign, "<node><foo/><foo/><bar/></node>")
@@ -474,22 +474,22 @@ TEST_XML(xpath_api_nodeset_move_assign, "<node><foo/><foo/><bar/></node>")
 	xpath_node_set set = doc.select_nodes(STR("node/bar/preceding::*"));
 
 	CHECK(set.size() == 2);
-	CHECK(set.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(set.type() == type_sorted_reverse);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move;
 
 	CHECK(move.size() == 0);
-	CHECK(move.type() == xpath_node_set::type_unsorted);
+	CHECK(move.type() == type_unsorted);
 
 	move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 2);
-	CHECK(move.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(move.type() == type_sorted_reverse);
 	CHECK(move[1] == doc.first_child().first_child());
 }
 
@@ -498,7 +498,7 @@ TEST_XML(xpath_api_nodeset_move_assign_destroy, "<node><foo/><foo/><bar/></node>
 	xpath_node_set set = doc.select_nodes(STR("node/bar/preceding::*"));
 
 	CHECK(set.size() == 2);
-	CHECK(set.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(set.type() == type_sorted_reverse);
 
 	xpath_node_set all = doc.select_nodes(STR("//*"));
 
@@ -509,10 +509,10 @@ TEST_XML(xpath_api_nodeset_move_assign_destroy, "<node><foo/><foo/><bar/></node>
 	all = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(all.size() == 2);
-	CHECK(all.type() == xpath_node_set::type_sorted_reverse);
+	CHECK(all.type() == type_sorted_reverse);
 	CHECK(all[1] == doc.first_child().first_child());
 }
 
@@ -521,22 +521,22 @@ TEST_XML(xpath_api_nodeset_move_assign_single, "<node><foo/><foo/><bar/></node>"
 	xpath_node_set set = doc.select_nodes(STR("node/bar"));
 
 	CHECK(set.size() == 1);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move;
 
 	CHECK(move.size() == 0);
-	CHECK(move.type() == xpath_node_set::type_unsorted);
+	CHECK(move.type() == type_unsorted);
 
 	move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 1);
-	CHECK(move.type() == xpath_node_set::type_sorted);
+	CHECK(move.type() == type_sorted);
 	CHECK(move[0] == doc.first_child().last_child());
 }
 
@@ -546,22 +546,22 @@ TEST(xpath_api_nodeset_move_assign_empty)
 	set.sort();
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 
 	test_runner::_memory_fail_threshold = 1;
 
 	xpath_node_set move;
 
 	CHECK(move.size() == 0);
-	CHECK(move.type() == xpath_node_set::type_unsorted);
+	CHECK(move.type() == type_unsorted);
 
 	move = std::move(set);
 
 	CHECK(set.size() == 0);
-	CHECK(set.type() == xpath_node_set::type_unsorted);
+	CHECK(set.type() == type_unsorted);
 
 	CHECK(move.size() == 0);
-	CHECK(move.type() == xpath_node_set::type_sorted);
+	CHECK(move.type() == type_sorted);
 }
 
 TEST_XML(xpath_api_nodeset_move_assign_self, "<node><foo/><foo/><bar/></node>")
@@ -569,7 +569,7 @@ TEST_XML(xpath_api_nodeset_move_assign_self, "<node><foo/><foo/><bar/></node>")
 	xpath_node_set set = doc.select_nodes(STR("node/bar"));
 
 	CHECK(set.size() == 1);
-	CHECK(set.type() == xpath_node_set::type_sorted);
+	CHECK(set.type() == type_sorted);
 
 	test_runner::_memory_fail_threshold = 1;
 

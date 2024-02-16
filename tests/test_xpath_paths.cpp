@@ -627,7 +627,7 @@ TEST_XML(xpath_paths_unsorted_child, "<node><foo><bar/></foo><node><foo><bar/></
 	CHECK_XPATH_NODESET(doc, STR("//node/foo/bar")) % 4 % 7 % 9;
 
 	xpath_node_set ns = doc.select_nodes(STR("//node/foo/bar"));
-	CHECK(ns.type() == xpath_node_set::type_unsorted);
+	CHECK(ns.type() == type_unsorted);
 
 	xpath_node_set nss = ns;
 	nss.sort();

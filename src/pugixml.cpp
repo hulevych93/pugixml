@@ -9045,10 +9045,10 @@ PUGI_IMPL_NS_END
 
 // Internal node set class
 PUGI_IMPL_NS_BEGIN
-	PUGI_IMPL_FN xpath_node_set::type_t xpath_get_order(const xpath_node* begin, const xpath_node* end)
+    PUGI_IMPL_FN type_t xpath_get_order(const xpath_node* begin, const xpath_node* end)
 	{
 		if (end - begin < 2)
-			return xpath_node_set::type_sorted;
+            return type_sorted;
 
 		document_order_comparator cmp;
 
@@ -9056,24 +9056,24 @@ PUGI_IMPL_NS_BEGIN
 
 		for (const xpath_node* it = begin + 1; it + 1 < end; ++it)
 			if (cmp(it[0], it[1]) != first)
-				return xpath_node_set::type_unsorted;
+                return type_unsorted;
 
-		return first ? xpath_node_set::type_sorted : xpath_node_set::type_sorted_reverse;
+        return first ? type_sorted : type_sorted_reverse;
 	}
 
-	PUGI_IMPL_FN xpath_node_set::type_t xpath_sort(xpath_node* begin, xpath_node* end, xpath_node_set::type_t type, bool rev)
+    PUGI_IMPL_FN type_t xpath_sort(xpath_node* begin, xpath_node* end, type_t type, bool rev)
 	{
-		xpath_node_set::type_t order = rev ? xpath_node_set::type_sorted_reverse : xpath_node_set::type_sorted;
+        type_t order = rev ? type_sorted_reverse : type_sorted;
 
-		if (type == xpath_node_set::type_unsorted)
+        if (type == type_unsorted)
 		{
-			xpath_node_set::type_t sorted = xpath_get_order(begin, end);
+            type_t sorted = xpath_get_order(begin, end);
 
-			if (sorted == xpath_node_set::type_unsorted)
+            if (sorted == type_unsorted)
 			{
 				sort(begin, end, document_order_comparator());
 
-				type = xpath_node_set::type_sorted;
+                type = type_sorted;
 			}
 			else
 				type = sorted;
@@ -9084,19 +9084,19 @@ PUGI_IMPL_NS_BEGIN
 		return order;
 	}
 
-	PUGI_IMPL_FN xpath_node xpath_first(const xpath_node* begin, const xpath_node* end, xpath_node_set::type_t type)
+    PUGI_IMPL_FN xpath_node xpath_first(const xpath_node* begin, const xpath_node* end, type_t type)
 	{
 		if (begin == end) return xpath_node();
 
 		switch (type)
 		{
-		case xpath_node_set::type_sorted:
+        case type_sorted:
 			return *begin;
 
-		case xpath_node_set::type_sorted_reverse:
+        case type_sorted_reverse:
 			return *(end - 1);
 
-		case xpath_node_set::type_unsorted:
+        case type_unsorted:
 			return *min_element(begin, end, document_order_comparator());
 
 		default:
@@ -9107,14 +9107,14 @@ PUGI_IMPL_NS_BEGIN
 
 	class xpath_node_set_raw
 	{
-		xpath_node_set::type_t _type;
+        type_t _type;
 
 		xpath_node* _begin;
 		xpath_node* _end;
 		xpath_node* _eos;
 
 	public:
-		xpath_node_set_raw(): _type(xpath_node_set::type_unsorted), _begin(NULL), _end(NULL), _eos(NULL)
+        xpath_node_set_raw(): _type(type_unsorted), _begin(NULL), _end(NULL), _eos(NULL)
 		{
 		}
 
@@ -9191,7 +9191,7 @@ PUGI_IMPL_NS_BEGIN
 
 		void remove_duplicates(xpath_allocator* alloc)
 		{
-			if (_type == xpath_node_set::type_unsorted && _end - _begin > 2)
+            if (_type == type_unsorted && _end - _begin > 2)
 			{
 				xpath_allocator_capture cr(alloc);
 
@@ -9227,12 +9227,12 @@ PUGI_IMPL_NS_BEGIN
 			}
 		}
 
-		xpath_node_set::type_t type() const
+        type_t type() const
 		{
 			return _type;
 		}
 
-		void set_type(xpath_node_set::type_t value)
+        void set_type(type_t value)
 		{
 			_type = value;
 		}
@@ -9864,9 +9864,9 @@ PUGI_IMPL_NS_BEGIN
 			return false;
 		}
 
-		static bool eval_once(xpath_node_set::type_t type, nodeset_eval_t eval)
+        static bool eval_once(type_t type, nodeset_eval_t eval)
 		{
-			return type == xpath_node_set::type_sorted ? eval != nodeset_eval_all : eval == nodeset_eval_any;
+            return type == type_sorted ? eval != nodeset_eval_all : eval == nodeset_eval_any;
 		}
 
 		template <class Comp> static bool compare_rel(xpath_ast_node* lhs, xpath_ast_node* rhs, const xpath_context& c, const xpath_stack& stack, const Comp& comp)
@@ -10449,7 +10449,7 @@ PUGI_IMPL_NS_BEGIN
 		{
 			const axis_t axis = T::axis;
 			const bool axis_reverse = (axis == axis_ancestor || axis == axis_ancestor_or_self || axis == axis_preceding || axis == axis_preceding_sibling);
-			const xpath_node_set::type_t axis_type = axis_reverse ? xpath_node_set::type_sorted_reverse : xpath_node_set::type_sorted;
+            const type_t axis_type = axis_reverse ? type_sorted_reverse : type_sorted;
 
 			bool once =
 				(axis == axis_attribute && _test == nodetest_name) ||
@@ -10472,7 +10472,7 @@ PUGI_IMPL_NS_BEGIN
 					size_t size = ns.size();
 
 					// in general, all axes generate elements in a particular order, but there is no order guarantee if axis is applied to two nodes
-					if (axis != axis_self && size != 0) ns.set_type(xpath_node_set::type_unsorted);
+                    if (axis != axis_self && size != 0) ns.set_type(type_unsorted);
 
 					step_fill(ns, *it, stack.result, once, v);
 					if (_right) apply_predicates(ns, size, stack, eval);
@@ -10486,7 +10486,7 @@ PUGI_IMPL_NS_BEGIN
 
 			// child, attribute and self axes always generate unique set of nodes
 			// for other axis, if the set stayed sorted, it stayed unique because the traversal algorithms do not visit the same node twice
-			if (axis != axis_child && axis != axis_attribute && axis != axis_self && ns.type() == xpath_node_set::type_unsorted)
+            if (axis != axis_child && axis != axis_attribute && axis != axis_self && ns.type() == type_unsorted)
 				ns.remove_duplicates(stack.temp);
 
 			return ns;
@@ -11119,7 +11119,7 @@ PUGI_IMPL_NS_BEGIN
 				xpath_node_set_raw rs = _right->eval_node_set(c, swapped_stack, eval);
 
 				// we can optimize merging two sorted sets, but this is a very rare operation, so don't bother
-				ls.set_type(xpath_node_set::type_unsorted);
+                ls.set_type(type_unsorted);
 
 				ls.append(rs.begin(), rs.end(), stack.result);
 				ls.remove_duplicates(stack.temp);
@@ -11200,7 +11200,7 @@ PUGI_IMPL_NS_BEGIN
 
 				xpath_node_set_raw ns;
 
-				ns.set_type(xpath_node_set::type_sorted);
+                ns.set_type(type_sorted);
 
 				if (c.n.node()) ns.push_back(c.n.node().root(), stack.result);
 				else if (c.n.attribute()) ns.push_back(c.n.parent().root(), stack.result);
@@ -12550,7 +12550,7 @@ namespace pugi
 	}
 #endif
 
-	PUGI_IMPL_FN xpath_node_set::type_t xpath_node_set::type() const
+    PUGI_IMPL_FN type_t xpath_node_set::type() const
 	{
 		return _type;
 	}
@@ -13105,7 +13105,7 @@ namespace pugi
 		return r.first();
 	}
 
-	PUGI_IMPL_FN const xpath_parse_result& xpath_query::result() const
+    PUGI_IMPL_FN xpath_parse_result xpath_query::result() const
 	{
 		return _result;
 	}

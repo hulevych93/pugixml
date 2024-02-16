@@ -735,7 +735,6 @@ namespace pugi
 	#endif
 
 		// Print subtree using a writer object
-        //! @cider_ignore
         void print(xml_writer& writer, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
 
 	#ifndef PUGIXML_NO_STL

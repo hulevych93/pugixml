@@ -411,6 +411,10 @@ namespace pugi
         //! @cider_ignore
 		operator unspecified_bool_type() const;
 
+        operator bool () const {
+            return !empty();
+        }
+
 		// Borland C++ workaround
 		bool operator!() const;
 
@@ -811,6 +815,10 @@ namespace pugi
 		// Safe bool conversion operator
         //! @cider_ignore
 		operator unspecified_bool_type() const;
+
+        operator bool () const {
+            return !empty();
+        }
 
 		// Borland C++ workaround
 		bool operator!() const;

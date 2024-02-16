@@ -426,11 +426,11 @@ namespace pugi
 		bool empty() const;
 
 		// Get attribute name/value, or "" if attribute is empty
-		const char_t* name() const;
-		const char_t* value() const;
+        const char* name() const;
+        const char* value() const;
 
 		// Get attribute value, or the default value if attribute is empty
-		const char_t* as_string(const char_t* def = PUGIXML_TEXT("")) const;
+        const char* as_string(const char* def = PUGIXML_TEXT("")) const;
 
 		// Get attribute value as a number, or the default value if conversion did not succeed or attribute is empty
 		int as_int(int def = 0) const;
@@ -447,10 +447,10 @@ namespace pugi
 		bool as_bool(bool def = false) const;
 
 		// Set attribute name/value (returns false if attribute is empty or there is not enough memory)
-		bool set_name(const char_t* rhs);
-		bool set_name(const char_t* rhs, size_t size);
-		bool set_value(const char_t* rhs);
-		bool set_value(const char_t* rhs, size_t size);
+        bool set_name(const char* rhs);
+        bool set_name(const char* rhs, size_t size);
+        bool set_value(const char* rhs);
+        bool set_value(const char* rhs, size_t size);
 
 		// Set attribute value with type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
 		bool set_value(int rhs);
@@ -469,7 +469,7 @@ namespace pugi
 	#endif
 
 		// Set attribute value (equivalent to set_value without error checking)
-		xml_attribute& operator=(const char_t* rhs);
+        xml_attribute& operator=(const char* rhs);
 		xml_attribute& operator=(int rhs);
 		xml_attribute& operator=(unsigned int rhs);
 		xml_attribute& operator=(long rhs);
@@ -543,11 +543,11 @@ namespace pugi
 		xml_node_type type() const;
 
 		// Get node name, or "" if node is empty or it has no name
-		const char_t* name() const;
+        const char* name() const;
 
 		// Get node value, or "" if node is empty or it has no value
 		// Note: For <node>text</node> node.value() does not return "text"! Use child_value() or text() methods to access text inside nodes.
-		const char_t* value() const;
+        const char* value() const;
 
 		// Get attribute list
 		xml_attribute first_attribute() const;
@@ -571,31 +571,31 @@ namespace pugi
 		xml_text text() const;
 
 		// Get child, attribute or next/previous sibling with the specified name
-		xml_node child(const char_t* name) const;
-		xml_attribute attribute(const char_t* name) const;
-		xml_node next_sibling(const char_t* name) const;
-		xml_node previous_sibling(const char_t* name) const;
+        xml_node child(const char* name) const;
+        xml_attribute attribute(const char* name) const;
+        xml_node next_sibling(const char* name) const;
+        xml_node previous_sibling(const char* name) const;
 
 		// Get attribute, starting the search from a hint (and updating hint so that searching for a sequence of attributes is fast)
-		xml_attribute attribute(const char_t* name, xml_attribute& hint) const;
+        xml_attribute attribute(const char* name, xml_attribute& hint) const;
 
 		// Get child value of current node; that is, value of the first child node of type PCDATA/CDATA
-		const char_t* child_value() const;
+        const char* child_value() const;
 
 		// Get child value of child with specified name. Equivalent to child(name).child_value().
-		const char_t* child_value(const char_t* name) const;
+        const char* child_value(const char* name) const;
 
 		// Set node name/value (returns false if node is empty, there is not enough memory, or node can not have name/value)
-		bool set_name(const char_t* rhs);
-		bool set_name(const char_t* rhs, size_t size);
-		bool set_value(const char_t* rhs);
-		bool set_value(const char_t* rhs, size_t size);
+        bool set_name(const char* rhs);
+        bool set_name(const char* rhs, size_t size);
+        bool set_value(const char* rhs);
+        bool set_value(const char* rhs, size_t size);
 
 		// Add attribute with specified name. Returns added attribute, or empty attribute on errors.
-		xml_attribute append_attribute(const char_t* name);
-		xml_attribute prepend_attribute(const char_t* name);
-		xml_attribute insert_attribute_after(const char_t* name, const xml_attribute& attr);
-		xml_attribute insert_attribute_before(const char_t* name, const xml_attribute& attr);
+        xml_attribute append_attribute(const char* name);
+        xml_attribute prepend_attribute(const char* name);
+        xml_attribute insert_attribute_after(const char* name, const xml_attribute& attr);
+        xml_attribute insert_attribute_before(const char* name, const xml_attribute& attr);
 
 		// Add a copy of the specified attribute. Returns added attribute, or empty attribute on errors.
 		xml_attribute append_copy(const xml_attribute& proto);
@@ -610,10 +610,10 @@ namespace pugi
 		xml_node insert_child_before(xml_node_type type, const xml_node& node);
 
 		// Add child element with specified name. Returns added node, or empty node on errors.
-		xml_node append_child(const char_t* name);
-		xml_node prepend_child(const char_t* name);
-		xml_node insert_child_after(const char_t* name, const xml_node& node);
-		xml_node insert_child_before(const char_t* name, const xml_node& node);
+        xml_node append_child(const char* name);
+        xml_node prepend_child(const char* name);
+        xml_node insert_child_after(const char* name, const xml_node& node);
+        xml_node insert_child_before(const char* name, const xml_node& node);
 
 		// Add a copy of the specified node as a child. Returns added node, or empty node on errors.
 		xml_node append_copy(const xml_node& proto);
@@ -629,14 +629,14 @@ namespace pugi
 
 		// Remove specified attribute
 		bool remove_attribute(const xml_attribute& a);
-		bool remove_attribute(const char_t* name);
+        bool remove_attribute(const char* name);
 
 		// Remove all attributes
 		bool remove_attributes();
 
 		// Remove specified child
 		bool remove_child(const xml_node& n);
-		bool remove_child(const char_t* name);
+        bool remove_child(const char* name);
 
 		// Remove all children
 		bool remove_children();
@@ -705,45 +705,45 @@ namespace pugi
         }
 
 		// Find child node by attribute name/value
-		xml_node find_child_by_attribute(const char_t* name, const char_t* attr_name, const char_t* attr_value) const;
-		xml_node find_child_by_attribute(const char_t* attr_name, const char_t* attr_value) const;
+        xml_node find_child_by_attribute(const char* name, const char* attr_name, const char* attr_value) const;
+        xml_node find_child_by_attribute(const char* attr_name, const char* attr_value) const;
 
 	#ifndef PUGIXML_NO_STL
 		// Get the absolute node path from root as a text string.
-		string_t path(char_t delimiter = '/') const;
+        std::string path(char delimiter = '/') const;
 	#endif
 
 		// Search for a node by path consisting of node names and . or .. elements.
-		xml_node first_element_by_path(const char_t* path, char_t delimiter = '/') const;
+        xml_node first_element_by_path(const char* path, char delimiter = '/') const;
 
 		// Recursively traverse subtree with xml_tree_walker
 		bool traverse(xml_tree_walker& walker);
 
 	#ifndef PUGIXML_NO_XPATH
 		// Select single node by evaluating XPath query. Returns first node from the resulting node set.
-		xpath_node select_node(const char_t* query, xpath_variable_set* variables = PUGIXML_NULL) const;
+        xpath_node select_node(const char* query, xpath_variable_set* variables = PUGIXML_NULL) const;
 		xpath_node select_node(const xpath_query& query) const;
 
 		// Select node set by evaluating XPath query
-		xpath_node_set select_nodes(const char_t* query, xpath_variable_set* variables = PUGIXML_NULL) const;
+        xpath_node_set select_nodes(const char* query, xpath_variable_set* variables = PUGIXML_NULL) const;
 		xpath_node_set select_nodes(const xpath_query& query) const;
 
 		// (deprecated: use select_node instead) Select single node by evaluating XPath query.
-		PUGIXML_DEPRECATED xpath_node select_single_node(const char_t* query, xpath_variable_set* variables = PUGIXML_NULL) const;
+        PUGIXML_DEPRECATED xpath_node select_single_node(const char* query, xpath_variable_set* variables = PUGIXML_NULL) const;
 		PUGIXML_DEPRECATED xpath_node select_single_node(const xpath_query& query) const;
 
 	#endif
 
 		// Print subtree using a writer object
         //! @cider_ignore
-		void print(xml_writer& writer, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
+        void print(xml_writer& writer, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
 
 	#ifndef PUGIXML_NO_STL
 		// Print subtree to stream
         //! @cider_ignore
-		void print(std::basic_ostream<char>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
+        void print(std::basic_ostream<char>& os, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto, unsigned int depth = 0) const;
         //! @cider_ignore
-		void print(std::basic_ostream<wchar_t>& os, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, unsigned int depth = 0) const;
+        void print(std::basic_ostream<wchar_t>& os, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, unsigned int depth = 0) const;
 	#endif
 
 		// Child nodes iterators
@@ -772,7 +772,7 @@ namespace pugi
 		// Range-based for support for all children with the specified name
 		// Note: name pointer must have a longer lifetime than the returned object; be careful with passing temporaries!
         //! @cider_ignore
-		xml_object_range<xml_named_node_iterator> children(const char_t* name) const;
+        xml_object_range<xml_named_node_iterator> children(const char* name) const;
 
 		// Get node offset in parsed file/string (in char_t units) for debugging purposes
 		ptrdiff_t offset_debug() const;
@@ -820,10 +820,10 @@ namespace pugi
 		bool empty() const;
 
 		// Get text, or "" if object is empty
-		const char_t* get() const;
+        const char* get() const;
 
 		// Get text, or the default value if object is empty
-		const char_t* as_string(const char_t* def = PUGIXML_TEXT("")) const;
+        const char* as_string(const char* def = PUGIXML_TEXT("")) const;
 
 		// Get text as a number, or the default value if conversion did not succeed or object is empty
 		int as_int(int def = 0) const;
@@ -840,8 +840,8 @@ namespace pugi
 		bool as_bool(bool def = false) const;
 
 		// Set text (returns false if object is empty or there is not enough memory)
-		bool set(const char_t* rhs);
-		bool set(const char_t* rhs, size_t size);
+        bool set(const char* rhs);
+        bool set(const char* rhs, size_t size);
 
 		// Set text with type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
 		bool set(int rhs);
@@ -860,7 +860,7 @@ namespace pugi
 	#endif
 
 		// Set text (equivalent to set without error checking)
-		xml_text& operator=(const char_t* rhs);
+        xml_text& operator=(const char* rhs);
 		xml_text& operator=(int rhs);
 		xml_text& operator=(unsigned int rhs);
 		xml_text& operator=(long rhs);
@@ -989,7 +989,7 @@ namespace pugi
 
 		// Construct an iterator which points to the specified node
 		// Note: name pointer is stored in the iterator and must have a longer lifetime than iterator itself
-		xml_named_node_iterator(const xml_node& node, const char_t* name);
+        xml_named_node_iterator(const xml_node& node, const char* name);
 
 		// Iterator operators
 		bool operator==(const xml_named_node_iterator& rhs) const;
@@ -1007,9 +1007,9 @@ namespace pugi
 	private:
 		mutable xml_node _wrap;
 		xml_node _parent;
-		const char_t* _name;
+        const char* _name;
 
-		xml_named_node_iterator(xml_node_struct* ref, xml_node_struct* parent, const char_t* name);
+        xml_named_node_iterator(xml_node_struct* ref, xml_node_struct* parent, const char* name);
 	};
 
 	// Abstract tree walker class (see xml_node::traverse)
@@ -1098,7 +1098,7 @@ namespace pugi
 	class PUGIXML_CLASS xml_document: public xml_node
 	{
 	private:
-		char_t* _buffer;
+        char* _buffer;
 
 		char _memory[192];
 
@@ -1138,10 +1138,10 @@ namespace pugi
 	#endif
 
 		// (deprecated: use load_string instead) Load document from zero-terminated string. No encoding conversions are applied.
-		PUGIXML_DEPRECATED xml_parse_result load(const char_t* contents, unsigned int options = parse_default);
+        PUGIXML_DEPRECATED xml_parse_result load(const char* contents, unsigned int options = parse_default);
 
 		// Load document from zero-terminated string. No encoding conversions are applied.
-		xml_parse_result load_string(const char_t* contents, unsigned int options = parse_default);
+        xml_parse_result load_string(const char* contents, unsigned int options = parse_default);
 
 		// Load document from file
 		xml_parse_result load_file(const char* path, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
@@ -1163,19 +1163,19 @@ namespace pugi
 		xml_parse_result load_buffer_inplace_own(void* contents, size_t size, unsigned int options = parse_default, xml_encoding encoding = encoding_auto);
 
 		// Save XML document to writer (semantics is slightly different from xml_node::print, see documentation for details).
-		void save(xml_writer& writer, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        void save(xml_writer& writer, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
 
 	#ifndef PUGIXML_NO_STL
 		// Save XML document to stream (semantics is slightly different from xml_node::print, see documentation for details).
         //! @cider_ignore
-		void save(std::basic_ostream<char>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        void save(std::basic_ostream<char>& stream, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
         //! @cider_ignore
-		void save(std::basic_ostream<wchar_t>& stream, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default) const;
+        void save(std::basic_ostream<wchar_t>& stream, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default) const;
 	#endif
 
 		// Save XML to file
-		bool save_file(const char* path, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
-		bool save_file(const wchar_t* path, const char_t* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        bool save_file(const char* path, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
+        bool save_file(const wchar_t* path, const char* indent = PUGIXML_TEXT("\t"), unsigned int flags = format_default, xml_encoding encoding = encoding_auto) const;
 
 		// Get document element
 		xml_node document_element() const;
@@ -1231,7 +1231,7 @@ namespace pugi
 
 	public:
 		// Get variable name
-		const char_t* name() const;
+        const char* name() const;
 
 		// Get variable type
 		xpath_value_type type() const;
@@ -1239,13 +1239,13 @@ namespace pugi
 		// Get variable value; no type conversion is performed, default value (false, NaN, empty string, empty node set) is returned on type mismatch error
 		bool get_boolean() const;
 		double get_number() const;
-		const char_t* get_string() const;
+        const char* get_string() const;
 		const xpath_node_set& get_node_set() const;
 
 		// Set variable value; no type conversion is performed, false is returned on type mismatch error
 		bool set(bool value);
 		bool set(double value);
-		bool set(const char_t* value);
+        bool set(const char* value);
 		bool set(const xpath_node_set& value);
 	};
 
@@ -1258,7 +1258,7 @@ namespace pugi
 		void _assign(const xpath_variable_set& rhs);
 		void _swap(xpath_variable_set& rhs);
 
-		xpath_variable* _find(const char_t* name) const;
+        xpath_variable* _find(const char* name) const;
 
 		static bool _clone(xpath_variable* var, xpath_variable** out_result);
 		static void _destroy(xpath_variable* var);
@@ -1279,17 +1279,17 @@ namespace pugi
 	#endif
 
 		// Add a new variable or get the existing one, if the types match
-		xpath_variable* add(const char_t* name, xpath_value_type type);
+        xpath_variable* add(const char* name, xpath_value_type type);
 
 		// Set value of an existing variable; no type conversion is performed, false is returned if there is no such variable or if types mismatch
-		bool set(const char_t* name, bool value);
-		bool set(const char_t* name, double value);
-		bool set(const char_t* name, const char_t* value);
-		bool set(const char_t* name, const xpath_node_set& value);
+        bool set(const char* name, bool value);
+        bool set(const char* name, double value);
+        bool set(const char* name, const char* value);
+        bool set(const char* name, const xpath_node_set& value);
 
 		// Get existing variable by name
-		xpath_variable* get(const char_t* name);
-		const xpath_variable* get(const char_t* name) const;
+        xpath_variable* get(const char* name);
+        const xpath_variable* get(const char* name) const;
 	};
 
 	// A compiled XPath query object
@@ -1308,7 +1308,7 @@ namespace pugi
 	public:
 		// Construct a compiled object from XPath expression.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on compilation errors.
-		explicit xpath_query(const char_t* query, xpath_variable_set* variables = PUGIXML_NULL);
+        explicit xpath_query(const char* query, xpath_variable_set* variables = PUGIXML_NULL);
 
 		// Constructor
 		xpath_query();
@@ -1336,14 +1336,14 @@ namespace pugi
 	#ifndef PUGIXML_NO_STL
 		// Evaluate expression as string value in the specified context; performs type conversion if necessary.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
-		string_t evaluate_string(const xpath_node& n) const;
+        std::string evaluate_string(const xpath_node& n) const;
 	#endif
 
 		// Evaluate expression as string value in the specified context; performs type conversion if necessary.
 		// At most capacity characters are written to the destination buffer, full result size is returned (includes terminating zero).
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
 		// If PUGIXML_NO_EXCEPTIONS is defined, returns empty  set instead.
-		size_t evaluate_string(char_t* buffer, size_t capacity, const xpath_node& n) const;
+        size_t evaluate_string(char* buffer, size_t capacity, const xpath_node& n) const;
 
 		// Evaluate expression as node set in the specified context.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on type mismatch and std::bad_alloc on out of memory errors.

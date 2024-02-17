@@ -522,6 +522,10 @@ namespace pugi
         //! @cider_ignore
 		operator unspecified_bool_type() const;
 
+        operator bool () const {
+            return !empty();
+        }
+
 		// Borland C++ workaround
 		bool operator!() const;
 

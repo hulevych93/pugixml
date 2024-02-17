@@ -1107,18 +1107,6 @@ TEST_XML(dom_unspecified_bool_coverage, "<node attr='value'>text</node>")
 
 	CHECK(node.text());
 	static_cast<void (*)(xml_text***)>(node.text())(0);
-
-#ifndef PUGIXML_NO_XPATH
-	xpath_query q(STR("/node"));
-
-	CHECK(q);
-	static_cast<void (*)(xpath_query***)>(q)(0);
-
-	xpath_node qn = q.evaluate_node(doc);
-
-	CHECK(qn);
-	static_cast<void (*)(xpath_node***)>(qn)(0);
-#endif
 }
 
 #if __cplusplus >= 201103

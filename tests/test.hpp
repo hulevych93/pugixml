@@ -44,33 +44,6 @@ template <typename Node> inline bool test_node_name_value(const Node& node, cons
 bool test_node(const pugi::xml_node& node, const pugi::char_t* contents, const pugi::char_t* indent, unsigned int flags);
 bool test_double_nan(double value);
 
-#ifndef PUGIXML_NO_XPATH
-bool test_xpath_string(const pugi::xpath_node& node, const pugi::char_t* query, pugi::xpath_variable_set* variables, const pugi::char_t* expected);
-bool test_xpath_boolean(const pugi::xpath_node& node, const pugi::char_t* query, pugi::xpath_variable_set* variables, bool expected);
-bool test_xpath_number(const pugi::xpath_node& node, const pugi::char_t* query, pugi::xpath_variable_set* variables, double expected);
-bool test_xpath_number_nan(const pugi::xpath_node& node, const pugi::char_t* query, pugi::xpath_variable_set* variables);
-
-bool test_xpath_fail_compile(const pugi::char_t* query, pugi::xpath_variable_set* variables);
-
-struct xpath_node_set_tester
-{
-	pugi::xpath_node* document_order;
-	size_t document_size;
-
-	pugi::xpath_node_set result;
-	unsigned int last;
-	const char* message;
-
-	void check(bool condition);
-
-	xpath_node_set_tester(const pugi::xpath_node_set& set, const char* message);
-	~xpath_node_set_tester();
-
-	xpath_node_set_tester& operator%(unsigned int expected);
-};
-
-#endif
-
 struct dummy_fixture {};
 
 #define TEST_FIXTURE(name, fixture) \
